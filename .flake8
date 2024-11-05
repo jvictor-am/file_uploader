@@ -1,5 +1,5 @@
 [flake8]
-ignore = F403,F405
+ignore = F403,F405,E203
 max-line-length = 100
 max-complexity = 8
 exclude = *test_settings.py
