@@ -7,6 +7,7 @@ repos:
             language: system
             types:
                 - python
+            exclude: ^(.*/migrations/.*|\.pyc$)
           - id: isort
             name: "format imports with isort"
             entry: isort
@@ -20,6 +21,7 @@ repos:
             language: system
             types:
                 - python
+            exclude: ^(.*/migrations/.*|\.pyc$)
           - id: bandit
             name: "check security"
             entry: bandit
