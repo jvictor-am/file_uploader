@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: >
+      sh -c "poetry run python manage.py makemigrations &&
+             poetry run python manage.py migrate &&
+             poetry run python manage.py create_superuser &&
+             poetry run python manage.py runserver 0.0.0.0:8080"
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_URL: ${DATABASE_URL}
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+      - celery
+    networks:
+      - file_uploader
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - file_uploader
+
+  redis:
+    image: redis:6.2.5
+    ports:
+      - "6379:6379"
+    networks:
+      - file_uploader
+
+  celery:
+    build: .
+    command: celery -A file_uploader worker --loglevel=info --concurrency=8
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - redis
+    networks:
+      - file_uploader
+
+  celery_beat:
+    build: .
+    command: celery -A file_uploader beat --loglevel=info
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - redis
+    networks:
+      - file_uploader
+
+  flower:
+    build: .
+    command: celery -A file_uploader --broker=redis://redis:6379/0 flower --port=5555
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+    networks:
+      - file_uploader
+  
+  test:
+    build: .
+    command: sh -c "pytest"
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=file_uploader.test_settings
+    networks:
+      - file_uploader
+
+volumes:
+  postgres_data:
+
+networks:
+  file_uploader:
+    driver: bridge
+    name: file_uploader
