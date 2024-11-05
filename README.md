@@ -25,7 +25,6 @@ You can interact with the system using [Django Admin](http://localhost:8080/admi
 
 - [Python v3.12](https://www.python.org/doc/)
 - [Django v5.1.2](https://docs.djangoproject.com/en/5.1/)
-- [Django REST Framework v3.15](https://www.django-rest-framework.org/community/release-notes/#315x-series)
 - [Celery v5.4.0](https://docs.celeryq.dev/en/stable/)
 - [Redis v5.2.0](https://redis.io/documentation)
 - [Flower v2.0.1](https://flower.readthedocs.io/en/latest/)
