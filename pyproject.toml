@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "file-uploader"
+version = "0.1.0"
+description = ""
+authors = ["Joao Victor Mesquita <joaovictorengp@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.2"
+psycopg2 = "^2.9.10"
+duckdb = "^1.1.2"
+redis = "^5.2.0"
+celery = "^5.4.0"
+flower = "^2.0.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+isort = "^5.13.2"
+flake8 = "^7.1.1"
+bandit = "^1.7.10"
+pre-commit = "^4.0.1"
+pytest = "^8.3.3"
+pytest-django = "^4.9.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
