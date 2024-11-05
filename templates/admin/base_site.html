@@ -1,0 +1,23 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom_admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name" style="display: flex; align-items: center;">
+    <a href="{% url 'admin:index' %}">File Uploader Admin</a>
+    {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'upload_csv' %}
+      <a href="{% url 'admin:upload_csv' %}">
+        <button
+          id="custom-admin-button" 
+          style="margin-left: 20px; padding: 5px 10px; background-color: #264b5d; color: white; border: 1px solid; border-color: white; border-radius: 4px; cursor: pointer;"
+        >
+          Upload CSV
+        </button>
+      </a>
+    {% endif %}
+  </h1>
+{% endblock %}

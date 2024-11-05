@@ -1,0 +1,60 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>Upload CSV File</h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file" accept=".csv" id="fileInput">
+    <button
+      type="submit"
+      id="submitButton"
+      disabled
+      style="
+        padding: 5px 10px;
+        background-color: gray; /* Initial background color when disabled */
+        color: white;
+        border: 1px solid white;
+        border-radius: 4px;
+        cursor: not-allowed; /* Cursor indicates non-clickable */
+        opacity: 0.6; /* Semi-transparent to show disabled state */
+        transition: background-color 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+      "
+    >
+      Upload
+    </button>
+</form>
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+        var submitButton = document.getElementById('submitButton');
+        if (this.files.length > 0) {
+            submitButton.disabled = false;
+            submitButton.style.backgroundColor = '#264b5d';
+            submitButton.style.cursor = 'pointer';
+            submitButton.style.opacity = '1';
+        } else {
+            submitButton.disabled = true;
+            submitButton.style.backgroundColor = 'gray';
+            submitButton.style.cursor = 'not-allowed';
+            submitButton.style.opacity = '0.6';
+        }
+    });
+
+    // Initialize button state on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        var fileInput = document.getElementById('fileInput');
+        var submitButton = document.getElementById('submitButton');
+        if (fileInput.files.length > 0) {
+            submitButton.disabled = false;
+            submitButton.style.backgroundColor = '#264b5d';
+            submitButton.style.cursor = 'pointer';
+            submitButton.style.opacity = '1';
+        } else {
+            submitButton.disabled = true;
+            submitButton.style.backgroundColor = 'gray';
+            submitButton.style.cursor = 'not-allowed';
+            submitButton.style.opacity = '0.6';
+        }
+    });
+</script>
+{% endblock %}
