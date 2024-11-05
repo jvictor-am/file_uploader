@@ -14,10 +14,11 @@ You can interact with the system using [Django Admin](http://localhost:8080/admi
 ### Key Features:
 
 - **Asynchronous Processing:** Utilizes Celery and Redis to handle file processing tasks in the background.
-- **Dockerized Environment:** Fully containerized using Docker and Docker Compose for easy setup and deployment.
+- **Dockerized Environment:** Fully containerized using [Docker](./Dockerfile) and [Docker Compose](./docker-compose.yml) for easy setup and deployment.
 - **Database Management:** Employs PostgreSQL for reliable data storage and DuckDB for efficient data querying.
-- **Code Quality:** Maintains high code quality with tools like Black, Flake8, and Bandit.
+- **Code Quality:** Maintains high code quality with [tools](.pre-commit-config.yaml) like Black, Flake8, and Bandit.
 - **Testing:** Comprehensive testing suite using Pytest and Pytest-Django.
+- **Celery Beat Schedule:** [task process_debt_batch](./billing/tasks.py#121) scheduled to run [every day 8PM (20h)](./file_uploader/settings.py#160) to generate invoices and send emails
 
 ---
 
@@ -95,6 +96,8 @@ docker exec file_uploader_web_1 sh -c "git config --global --add safe.directory 
 
 - **Django Admin:** [http://localhost:8080/admin](http://localhost:8080/admin)\
   Use the credentials created with create_superuser.py.
+
+- **Flower** [http://localhost:5555](http://localhost:5555)
 
 ### 8. Running Tests
 
